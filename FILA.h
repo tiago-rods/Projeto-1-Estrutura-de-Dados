@@ -18,9 +18,25 @@ Fila* liberaFila (Fila* f) LIBERA A FILA
 
 void imprimeFila (Fila* f)IMPRIME A FILA
 */
+
+//---------------------------------------------------------------
+//Definindo o tipo pet
+
+typedef struct {
+    int id;                         // 100..999, único
+    char nome[50];
+    char especie[30];
+    int idade;
+    struct { int dia, mes, ano; } nascimento;
+    int prioridade;                 // 0 = emergência, 1 = normal
+    int atendido;                   // 0 = não, 1 = sim
+} Pet;
+
+//---------------------------------------------------------------
+
 typedef struct nos
 {
-    int info;
+    Pet info;  // Agora um no guarda um tipo pet
     struct nos *prox;
 }Nos;
 
