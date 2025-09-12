@@ -38,7 +38,8 @@ typedef struct {
 //Funções novas para manipulação de Pets
 //---------------------------------------------------------------
 
-// Função para criar um Pet padrão
+// Função para criar um Pet padrão PARA TESTES
+/*
 Pet criaPet(int id, const char* nome, const char* especie, int idade) {
     Pet p;
     p.id = id;
@@ -51,7 +52,7 @@ Pet criaPet(int id, const char* nome, const char* especie, int idade) {
     p.prioridade = 1;
     p.atendido = 0;
     return p;
-}
+} */
 //----------------------------------------------------------------
 
 
@@ -132,18 +133,17 @@ Pet RetiraFila (Fila* f)
 void imprimeFila(Fila* f) {
     Nos* q;
     printf("\n");
-    printf("%-5s | %-15s | %-15s | %-5s | %-12s | %s\n",
+    printf("%-5s | %-15s | %-15s | %-5s | %-15s | %s\n",
            "ID", "Nome", "Especie", "Idade","Prioridade", "Data de nascimento");
     printf("---------------------------------------------------------------\n");
 
     for (q = f->ini; q != NULL; q = q->prox) {
-        printf("%-5d | %-15s | %-15s | %-5d | %-12s | %02d/%02d/%04d \n", // <-- Alteração aqui
+        printf("%-5d | %-15s | %-15s | %-5d | %-15s | %02d/%02d/%04d \n", // <-- Alteração aqui
                q->info.id,
                q->info.nome,
                q->info.especie,
                q->info.idade,
                (q->info.prioridade == 0 ? "Emergencial(0)" : "Normal(1)"),
-               q->info.prioridade,
                q->info.nascimento.dia, q->info.nascimento.mes, q->info.nascimento.ano
         );
     }

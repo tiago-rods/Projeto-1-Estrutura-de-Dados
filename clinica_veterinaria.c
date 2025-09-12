@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "FILA.h"
 
+// tipo Pet e caracteristicas
 /*
 typedef struct {
-    int id;                  // entre 100 e 999 (único)
+    int id;                  // entre 100 e 999 
     char nome[50];
     char especie[30];
     int idade;
@@ -37,9 +39,10 @@ int mostrarMenu() {
     printf("Escolha: ");
     fflush(stdout);   
     scanf("%d", &escolha);
-
+    getchar(); // consome o '\n' deixado no buffer
     return escolha;
 }
+
 
 
 
@@ -66,11 +69,135 @@ int mostrarMenu() {
     return 0;
 }
 */
+//===============================================
+//Funções principais 
+//===============================================
 
-int main(){
-    int numEscolha = mostrarMenu();
 
+//Gera um novo id que ainda nao foi utilizado
+int gerarID(){
+    int id = rand() % 900 + 100; // 100 a 999
+    return id;
+}
+
+
+//Cria um novo pet 
+Pet criaPet(){
+    Pet p;
+
+    p.atendido = 0; // Um novo pet ainda nao foi atendido, por padrao = 0
+    p.id = gerarID();
     
+    printf("Nome: ");
+    fgets(p.nome, sizeof(p.nome), stdin);
+    p.nome[strcspn(p.nome, "\n")] = '\0'; 
+
+
+    printf("Especie: ");
+    fgets(p.especie, sizeof(p.especie), stdin);
+    p.especie[strcspn(p.especie, "\n")] = '\0';
+
+    printf("Idade: ");
+    scanf("%d", &p.idade);
+    getchar(); // limpa o \n deixado no buffer 
+
+    printf("Ano de nascimento: ");
+    scanf("%d", &p.nascimento.ano);
+    getchar();
+
+    printf("Mes de nascimento: ");
+    scanf("%d", &p.nascimento.mes);
+    getchar();
+
+    printf("Dia de nascimento: ");
+    scanf("%d", &p.nascimento.dia);
+    getchar();
+
+    printf("Tipo de prioridade (0 = Emergencia | 1 = Normal ): ");
+    scanf("%d", &p.prioridade);
+    getchar();
+
+    return p;
+}
+
+//Insere um novo pet na fila
+
+void inserirPet(Fila *f0, Fila *f1){
+
+    //cria o pet 
+    Pet novoPet = criaPet();
+
+    //insere o pet na fila 
+    if (novoPet.prioridade == 0){
+    InsereFila(f0, novoPet); // Insere na fila emergencial
+    } else{ 
+    InsereFila(f1, novoPet); // Insere na fila normal
+    }
+    
+
+}
+
+
+int main() {
+
+    srand(time(NULL)); // semente para o programa inteiro
+
+ // CRIANDO FILAS 
+
+    Fila *filaEmergencia = CriaFila();
+    Fila *filaNormal     = CriaFila();
+    Fila *filaAtendidos  = CriaFila(); 
+    int numEscolha;
+
+    do {
+        numEscolha = mostrarMenu();
+
+        switch (numEscolha) {
+            case 1:
+                
+                inserirPet(filaEmergencia, filaNormal);
+                break;
+
+            case 2:
+                // Atender próximo
+                //atenderPet(filaEmergencia, filaNormal, filaAtendidos);
+                break;
+
+            case 3:
+                // Buscar por nome ou ID
+                //buscarPet(filaEmergencia, filaNormal, filaAtendidos);
+                break;
+
+            case 4:
+                // Imprimir relatório das filas
+                //imprimeRelatorio(filaEmergencia, filaNormal);
+                break;
+
+            case 5:
+                // Mostrar próximo da fila
+                //mostrarProximo(filaEmergencia, filaNormal);
+                break;
+
+            case 6:
+                // Listar pets já atendidos
+                //imprimeFila(filaEmergencia);
+                break;
+
+            case 7:
+                printf("\nFinalizando o sistema.\n");
+                break;
+
+            default:
+                printf("\nDigite um numero valido!\n");
+                break;
+        }
+
+    } while (numEscolha != 7);
+
+    // Libera memoria e deixa os ponteiros null pois o libera fila retorna null
+    filaEmergencia = liberaFila(filaEmergencia);
+    filaNormal     = liberaFila(filaNormal);
+    filaAtendidos  = liberaFila(filaAtendidos);
 
     return 0;
 }
