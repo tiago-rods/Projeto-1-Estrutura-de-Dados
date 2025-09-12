@@ -4,6 +4,7 @@
 
 #include <stdio.h>   // printf
 #include <stdlib.h>  // malloc, free, exit, NULL
+#include <string.h> 
 
 /* FUN��ES DE MANIPULA��O DE PFILA
 
@@ -34,6 +35,26 @@ typedef struct {
 } Pet;
 
 //---------------------------------------------------------------
+//Funções novas para manipulação de Pets
+//---------------------------------------------------------------
+
+// Função para criar um Pet padrão PARA TESTES
+/*
+Pet criaPet(int id, const char* nome, const char* especie, int idade) {
+    Pet p;
+    p.id = id;
+    strcpy(p.nome, nome);
+    strcpy(p.especie, especie);
+    p.idade = 0;
+    p.nascimento.dia = 1;
+    p.nascimento.mes = 1;
+    p.nascimento.ano = 2020;
+    p.prioridade = 1;
+    p.atendido = 0;
+    return p;
+} */
+//----------------------------------------------------------------
+
 
 typedef struct nos
 {
@@ -64,7 +85,7 @@ Fila* CriaFila () //o que sera retornado da função sera um ponteiro para um fi
     return f; //retorna a fila 
 }
 
-Nos* ins_fim (Nos *fim, int A) //retorna um ponteiro para o novo nó inserido no final. por exemplo:    f->fim = ins_fim(f->fim, 20);
+Nos* ins_fim (Nos *fim, Pet A) //retorna um ponteiro para o novo nó inserido no final. por exemplo:    f->fim = ins_fim(f->fim, 20);
 {
     Nos *p = (Nos*)malloc(sizeof(Nos)); //cria um ponteiro para o nó, e esse ponteiro se chama p 
     p->info = A; //Insere o valor inteiro no nó
@@ -78,7 +99,7 @@ Nos* ins_fim (Nos *fim, int A) //retorna um ponteiro para o novo nó inserido no
 
 }
 
-void InsereFila (Fila* f, int v)
+void InsereFila (Fila* f, Pet v)
 {
     f->fim = ins_fim(f->fim,v);
     if (f->ini==NULL) /* fila antes vazia? */
@@ -92,9 +113,9 @@ Nos* retira_ini (Nos* ini)
     return p;
 }
 
-int RetiraFila (Fila* f)
+Pet RetiraFila (Fila* f)
 {
-    int v;
+    Pet v;
     if (VaziaFila(f))
     {
         printf("Fila vazia.\n");
@@ -106,14 +127,25 @@ int RetiraFila (Fila* f)
     f->fim = NULL;
     return v;
 }
-
-void imprimeFila (Fila* f)
-{
+//---------------------------------------------------------
+//Função para imprimir os pets na fila 
+//---------------------------------------------------------
+void imprimeFila(Fila* f) {
     Nos* q;
-    printf("\n\t\t");
-    for (q=f->ini; q!=NULL; q=q->prox)
-    {
-        printf("%d - ",q->info);
+    printf("\n");
+    printf("%-5s | %-15s | %-15s | %-5s | %-15s | %s\n",
+           "ID", "Nome", "Especie", "Idade","Prioridade", "Data de nascimento");
+    printf("---------------------------------------------------------------\n");
+
+    for (q = f->ini; q != NULL; q = q->prox) {
+        printf("%-5d | %-15s | %-15s | %-5d | %-15s | %02d/%02d/%04d \n", // <-- Alteração aqui
+               q->info.id,
+               q->info.nome,
+               q->info.especie,
+               q->info.idade,
+               (q->info.prioridade == 0 ? "Emergencial(0)" : "Normal(1)"),
+               q->info.nascimento.dia, q->info.nascimento.mes, q->info.nascimento.ano
+        );
     }
     printf("\n");
 }
