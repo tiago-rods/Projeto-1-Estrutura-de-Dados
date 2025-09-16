@@ -5,16 +5,13 @@
 
 // tipo Pet e caracteristicas
 /*
-typedef struct {
-    int id;                  // entre 100 e 999 
+typedef struct animal{
+    int id;                  // entre 100 e 999
     char nome[50];
     char especie[30];
     int idade;
-    struct {
-        int dia, mes, ano;
-    } nascimento;
+    data nascimento{int dia, mes, ano;};
     int prioridade;          // 0 = emergência, 1 = normal
-    int atendido;            // 0 = não, 1 = sim
 } Pet;
 */
 
@@ -37,7 +34,7 @@ int mostrarMenu() {
     printf("----------------------------------------------\n");
 
     printf("Escolha: ");
-    fflush(stdout);   
+    fflush(stdout);
     scanf("%d", &escolha);
     getchar(); // consome o '\n' deixado no buffer
     return escolha;
@@ -70,7 +67,7 @@ int mostrarMenu() {
 }
 */
 //===============================================
-//Funções principais 
+//Funções principais
 //===============================================
 
 
@@ -81,16 +78,15 @@ int gerarID(){
 }
 
 
-//Cria um novo pet 
+//Cria um novo pet
 Pet criaPet(){
     Pet p;
 
-    p.atendido = 0; // Um novo pet ainda nao foi atendido, por padrao = 0
     p.id = gerarID();
-    
+
     printf("Nome: ");
     fgets(p.nome, sizeof(p.nome), stdin);
-    p.nome[strcspn(p.nome, "\n")] = '\0'; 
+    p.nome[strcspn(p.nome, "\n")] = '\0';
 
 
     printf("Especie: ");
@@ -99,7 +95,7 @@ Pet criaPet(){
 
     printf("Idade: ");
     scanf("%d", &p.idade);
-    getchar(); // limpa o \n deixado no buffer 
+    getchar(); // limpa o \n deixado no buffer
 
     printf("Ano de nascimento: ");
     scanf("%d", &p.nascimento.ano);
@@ -124,29 +120,60 @@ Pet criaPet(){
 
 void inserirPet(Fila *f0, Fila *f1){
 
-    //cria o pet 
+    //cria o pet
     Pet novoPet = criaPet();
 
-    //insere o pet na fila 
+    //insere o pet na fila
     if (novoPet.prioridade == 0){
-    InsereFila(f0, novoPet); // Insere na fila emergencial
-    } else{ 
-    InsereFila(f1, novoPet); // Insere na fila normal
+        InsereFila(f0, novoPet); // Insere na fila emergencial
+    } else{
+        InsereFila(f1, novoPet); // Insere na fila normal
     }
-    
-
 }
 
+/*void atenderPet(){
+
+    FAZER COMANDO PARA ATENDER UM PET E RETIRÁ-LO DA FILA DE ATENDIMENTO
+        - VER SE HÁ PET NA FILA DE ESPERA, SENÃO, ATENDER DA FILA NORMAL
+        - PETS RETIRADOS DA FILA DE ATENDIMENTO DEVEM SER INSERIDOS NA FILA DE ATENDIDOS
+
+}
+*/
+
+/*void buscarPet(){
+
+    FAZER COMANDO PARA BUSCAR UM PET POR ID OU POR NOME E CASO SEJA ENCONTRADO, IMPRIMIR SUAS INFORMAÇÕES, OU RETORNAR O OBJETO PET
+
+}
+*/
+
+/*void imprimirAtendimento(){
+
+    IMPRIMIR AS DUAS FILAS DE ESPERA
+}
+*/
+
+/*void imprimirProximo(){
+
+    IMPRIMIR O PRÓXIMO PET A SER ATENDIDO
+}
+*/
+
+/*void imprimirAtendidos(){
+
+    IMPRIMIR TODOS OS PETS JÁ ATENDIDOS
+}
+*/
 
 int main() {
 
     srand(time(NULL)); // semente para o programa inteiro
 
- // CRIANDO FILAS 
+ // CRIANDO FILAS
 
     Fila *filaEmergencia = CriaFila();
     Fila *filaNormal     = CriaFila();
-    Fila *filaAtendidos  = CriaFila(); 
+    Fila *filaAtendidos  = CriaFila();
     int numEscolha;
 
     do {
@@ -154,7 +181,7 @@ int main() {
 
         switch (numEscolha) {
             case 1:
-                
+
                 inserirPet(filaEmergencia, filaNormal);
                 break;
 
