@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "FILA.h"
-#include <string.h>
+#include <string.h> 
 /* ============== TODO ============== */
 // - função para atender o próximo pet (retirar da fila e adicionar ao histórico)
 // - Verificar o motivo de pets selecionados para irem para a fila normal irem para a fila de emergência
