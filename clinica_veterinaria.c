@@ -5,7 +5,7 @@
 #include <string.h> 
 /* ============== TODO ============== */
 // - função para atender o próximo pet (retirar da fila e adicionar ao histórico)
-// - Verificar o motivo de pets selecionados para irem para a fila normal irem para a fila de emergência
+// - registrarNoHistorico pet ja antedido mudando de fila
 // -
 // -
 // -
@@ -14,14 +14,13 @@
 /* ============== TODO ============== */
 
 //* ============== DONE ============== */
-// -
-// -
-// -
-// -
-// -
-// -
-// -
-// -
+// -Verificar o motivo de pets selecionados para irem para a fila normal irem para a fila de emergência
+// - atenderPet
+// - buscarPet
+// - buscarPetInterface
+// - imprimeRelatorio
+// - 
+// - listaPetsAtendidos
 //* ============== DONE ============== */
 
 
@@ -30,7 +29,7 @@ Pet criaPet();
 void inserirPet(Fila *filaComum, Fila *filaEmergencial);
 int geraIdUnico(Fila *f1, Fila *f2, Fila *f3);
 int gerarID();
-void registrarNoHistorico(Fila *historico, Pet p);
+void registrarNoHistorico(Fila *historico, Pet p); //preciso fazer ainda
 void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
 Pet* buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char *termo, int buscarPorId);
 void buscarPetInterface(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
