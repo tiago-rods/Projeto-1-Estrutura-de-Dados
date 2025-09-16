@@ -126,6 +126,7 @@ int mostrarMenu() {
     getchar(); // consome o '\n' deixado no buffer
     return escolha;
 }
+// ----------------------------------------------------------------
 
 
 
