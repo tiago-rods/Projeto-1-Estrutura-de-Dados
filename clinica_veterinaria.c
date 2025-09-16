@@ -54,7 +54,7 @@ int main() {
         switch (numEscolha) {
             case 1:
 
-                inserirPet(filaEmergencia, filaNormal);
+                inserirPet(filaNormal, filaEmergencia);
                 break;
 
             case 2:
