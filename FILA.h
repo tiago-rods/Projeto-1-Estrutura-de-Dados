@@ -119,13 +119,24 @@ Pet RetiraFila (Fila* f)
     if (VaziaFila(f))
     {
         printf("Fila vazia.\n");
-        exit(0); /* aborta programa */
+        return v; /* aborta comando */
     }
     v = f->ini->info;                   //guarda as informações do pet no início da fila
     f->ini = retira_ini(f->ini);        //retira o item do início da fila e avança o f->ini para o próximo item
     if (f->ini == NULL)                 // fila ficou vazia?
     f->fim = NULL;
     return v;
+}
+// imprime o pet 
+void imprimePet(Pet p) {
+    printf("%-5d | %-15s | %-15s | %-5d | %-15s | %02d/%02d/%04d \n", // <-- Alteração aqui
+               p.id,
+               p.nome,
+               p.especie,
+               p.idade,
+               (p.prioridade == 0 ? "Emergencial(0)" : "Normal(1)"),
+               p.nascimento.dia, p.nascimento.mes, p.nascimento.ano
+        );
 }
 //---------------------------------------------------------
 //Função para imprimir os pets na fila
@@ -138,14 +149,7 @@ void imprimeFila(Fila* f) {
     printf("---------------------------------------------------------------\n");
 
     for (q = f->ini; q != NULL; q = q->prox) {
-        printf("%-5d | %-15s | %-15s | %-5d | %-15s | %02d/%02d/%04d \n", // <-- Alteração aqui
-               q->info.id,
-               q->info.nome,
-               q->info.especie,
-               q->info.idade,
-               (q->info.prioridade == 0 ? "Emergencial(0)" : "Normal(1)"),
-               q->info.nascimento.dia, q->info.nascimento.mes, q->info.nascimento.ano
-        );
+        imprimePet(q->info);
     }
     printf("\n");
 }
@@ -163,9 +167,6 @@ Fila* liberaFila (Fila* f)
     free(f);
     return NULL;
 }
-
-
-
 
 
 #endif // FILA_H_INCLUDED

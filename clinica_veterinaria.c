@@ -131,14 +131,29 @@ void inserirPet(Fila *f0, Fila *f1){
     }
 }
 
-/*void atenderPet(){
 
-    FAZER COMANDO PARA ATENDER UM PET E RETIRÁ-LO DA FILA DE ATENDIMENTO
-        - VER SE HÁ PET NA FILA DE ESPERA, SENÃO, ATENDER DA FILA NORMAL
-        - PETS RETIRADOS DA FILA DE ATENDIMENTO DEVEM SER INSERIDOS NA FILA DE ATENDIDOS
+/* COMANDO PARA ATENDER UM PET E RETIRÁ-LO DA FILA DE ATENDIMENTO
+    - VER SE HÁ PET NA FILA DE ESPERA, SENÃO, ATENDER DA FILA NORMAL
+    - PETS RETIRADOS DA FILA DE ATENDIMENTO DEVEM SER INSERIDOS NA FILA DE ATENDIDOS
+*/
+// f0 - Emergencia, f1 - normal
+void atenderPet(Fila *atendidos, Fila *f0, Fila *f1){
+    // Cria esse Pet aux para salvar as info ao retirar
+    Pet aux;
+    // Se a fila emergencia estiver vazia
+        if (VaziaFila(f0) == 1) {
+            aux = RetiraFila(f1);
+            printf("Atendimento Normal Concluido\n");
+            imprimePet(aux);
+        } else {
+            aux = RetiraFila(f0);
+            printf("Atendimento de Emergencia Concluido\n");
+            imprimePet(aux);
+        }
+        InsereFila(atendidos, aux);
 
 }
-*/
+
 
 /*void buscarPet(){
 
@@ -187,7 +202,10 @@ int main() {
 
             case 2:
                 // Atender próximo
-                //atenderPet(filaEmergencia, filaNormal, filaAtendidos);
+                atenderPet(filaEmergencia, filaNormal, filaAtendidos);
+                imprimeFila(filaAtendidos);
+                imprimeFila(filaEmergencia);
+                imprimeFila(filaNormal);
                 break;
 
             case 3:
