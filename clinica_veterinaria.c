@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h> 
 #include <time.h>
 #include "FILA.h"
+
+
+
 
 // tipo Pet e caracteristicas
 /*
@@ -73,20 +78,30 @@ int mostrarMenu() {
 //Funções principais 
 //===============================================
 
-
+//-----------------------------------------------
 //Gera um novo id que ainda nao foi utilizado
-int gerarID(){
-    int id = rand() % 900 + 100; // 100 a 999
+//-----------------------------------------------
+
+int gerarID(bool v[]){
+      
+    int id; 
+
+    do {
+        id = rand() % 900 + 100;  // gera  id entre 100 e 999
+    } while (v[id - 100]);    // se a condição for verdadeira significa que ja foi usado, portando gera outro id 
+
+    v[id - 100] = true;       //  caso o id nao tenha sido usado ainda, marca como usado
+ 
     return id;
 }
 
 
 //Cria um novo pet 
-Pet criaPet(){
+Pet criaPet(bool v[]){
     Pet p;
 
     p.atendido = 0; // Um novo pet ainda nao foi atendido, por padrao = 0
-    p.id = gerarID();
+    p.id = gerarID(v);
     
     printf("Nome: ");
     fgets(p.nome, sizeof(p.nome), stdin);
@@ -122,10 +137,10 @@ Pet criaPet(){
 
 //Insere um novo pet na fila
 
-void inserirPet(Fila *f0, Fila *f1){
+void inserirPet(Fila *f0, Fila *f1, bool v[]){
 
     //cria o pet 
-    Pet novoPet = criaPet();
+    Pet novoPet = criaPet(v);
 
     //insere o pet na fila 
     if (novoPet.prioridade == 0){
@@ -140,6 +155,7 @@ void inserirPet(Fila *f0, Fila *f1){
 
 int main() {
 
+    bool vetorID[900] = {false}; // inicializa o vetor de ids como todos falsos 
     srand(time(NULL)); // semente para o programa inteiro
 
  // CRIANDO FILAS 
@@ -155,7 +171,7 @@ int main() {
         switch (numEscolha) {
             case 1:
                 
-                inserirPet(filaEmergencia, filaNormal);
+                inserirPet(filaEmergencia, filaNormal, vetorID);
                 break;
 
             case 2:
@@ -180,7 +196,7 @@ int main() {
 
             case 6:
                 // Listar pets já atendidos
-                //imprimeFila(filaEmergencia);
+                imprimeFila(filaEmergencia);
                 break;
 
             case 7:
