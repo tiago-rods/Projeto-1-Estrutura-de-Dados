@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+<<<<<<< HEAD:clinica_veterinaria.c
 #include <time.h>
+=======
+#include <string.h>
+#include <time.h>
+#include <conio.h> //para _getch, le um caractere sem precisar do ENTER
+>>>>>>> 91974166f806ec8b1e8fa9786b9fac5df1733398:clinicaVeterinaria.c
 #include "FILA.h"
 #include <string.h> 
 /* ============== TODO ============== */
@@ -13,6 +19,7 @@
 // -
 /* ============== TODO ============== */
 
+<<<<<<< HEAD:clinica_veterinaria.c
 //* ============== DONE ============== */
 // -
 // -
@@ -100,23 +107,59 @@ int main() {
 
     return 0;
 }
+=======
+typedef struct {
+    int id;                  // entre 100 e 999 (único)
+    char nome[50];
+    char especie[30];
+    int idade;
+    struct {
+        int dia, mes, ano;
+    } data;
+    int prioridade;          // 0 = emergência, 1 = normal
+    int atendido;            // 0 = não, 1 = sim
+} Pet;
+>>>>>>> 91974166f806ec8b1e8fa9786b9fac5df1733398:clinicaVeterinaria.c
 
 
 // --------------------------------------------------------
 // Menu
 // --------------------------------------------------------
+<<<<<<< HEAD:clinica_veterinaria.c
 int mostrarMenu() {
 
     int escolha;
+=======
+void mostrarMenu();
+int numeroAleatorio();
+
+int main(){
+
+    mostrarMenu();
+
+
+}
+
+void mostrarMenu() {
+>>>>>>> 91974166f806ec8b1e8fa9786b9fac5df1733398:clinicaVeterinaria.c
     printf("\n==============================================\n");
     printf("   CLINICA VETERINARIA - GERENCIAMENTO DE FILAS\n");
     printf("==============================================\n");
+<<<<<<< HEAD:clinica_veterinaria.c
     printf("1) Inserir pet na fila\n");
     printf("2) Atender proximo pet\n");
     printf("3) Buscar pet por Nome/ID\n");
     printf("4) Imprimir relatorio das filas\n");
     printf("5) Mostrar proximo a ser atendido\n");
     printf("6) Listar pets ja atendidos\n");
+=======
+    printf("\t\t 1) Inserir pet na fila\n");
+    printf("\t\t 2) Atender próximo pet\n");
+    printf("\t\t 3) Buscar pet por Nome/ID\n");
+    printf("\t\t 4) Imprimir relatório das filas\n");
+    printf("\t\t 5) Mostrar próximo a ser atendido\n");
+    printf("\t\t 6) Listar pets já atendidos\n");
+>>>>>>> 91974166f806ec8b1e8fa9786b9fac5df1733398:clinicaVeterinaria.c
     printf("7) Finalizar\n");
     printf("----------------------------------------------\n");
 
@@ -140,7 +183,9 @@ int gerarID(){
     int id = rand() % 900 + 100; // 100 a 999
     return id;
 }
+// ----------------------------------------------------------------
 
+<<<<<<< HEAD:clinica_veterinaria.c
 int geraIdUnico(Fila *f1, Fila *f2, Fila *f3) {
     int id;
     int unico;
@@ -443,6 +488,11 @@ void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal) {
 /*void imprimirAtendidos(){
 
 
+=======
+// Função para gerar um ID único entre 100 e 999
+int numeroAleatorio() {
+    return (rand() % 900) + 100;
+>>>>>>> 91974166f806ec8b1e8fa9786b9fac5df1733398:clinicaVeterinaria.c
 }
 */
 
