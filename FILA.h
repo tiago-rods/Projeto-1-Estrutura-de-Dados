@@ -96,20 +96,31 @@ Nos* retiraInicio (Nos* inicio)
     return p;
 }
 
-Pet RetiraFila (Fila* f)
+Pet RetiraFila (Fila* f, bool v[])
 {
-    Pet v; // O Pet a ser retornado
+    Pet p; // Pet a ser retornado
     if (VaziaFila(f))
     {
         printf("Fila vazia. Nao e possivel retirar Pet.\n");
-        exit(EXIT_FAILURE); /* aborta programa, pois não há o que retirar */
+        exit(EXIT_FAILURE); /* aborta programa */
     }
-    v = f->inicio->info; // Pega a informação do Pet do início da fila
-    f->inicio = retiraInicio(f->inicio); // Remove o nó do início
-    if (f->inicio == NULL) /* fila ficou vazia? */
-    f->fim = NULL; // Se o início é NULL, o fim também deve ser
-    return v;
+
+    p = f->inicio->info; // pega o Pet do início
+
+
+     // Libera o ID no vetor
+    v[p.id - 100] = false;
+
+    
+    f->inicio = retiraInicio(f->inicio); // remove o nó do início
+    if (f->inicio == NULL)
+        f->fim = NULL;
+
+   
+
+    return p;
 }
+
 //---------------------------------------------------------
 //Função para imprimir os pets na fila
 //---------------------------------------------------------

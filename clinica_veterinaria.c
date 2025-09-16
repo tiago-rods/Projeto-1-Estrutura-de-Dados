@@ -28,11 +28,12 @@
 
 
 int mostrarMenu();
-Pet criaPet();
-void inserirPet(Fila *filaNormal, Fila *filaEmergencia);
-int gerarID();
+Pet criaPet(bool v[]);
+void inserirPet(Fila *filaNormal, Fila *filaEmergencia, bool v[]);
+int gerarID(bool v[]);
 void registrarNoHistorico(Fila *historico, Pet p);
-void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
+void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, bool v[]);
+void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal);
 Pet* buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char *termo, int buscarPorId);
 void buscarPetInterface(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
 void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal);
@@ -56,12 +57,12 @@ int main() {
         switch (numEscolha) {
             case 1:
 
-                inserirPet(filaEmergencia, filaNormal);
+                inserirPet(filaEmergencia, filaNormal, vetorID);
                 break;
 
             case 2:
                 // Atender próximo
-                atenderPet(filaEmergencia, filaNormal, filaAtendidos);
+                atenderPet(filaEmergencia, filaNormal, filaAtendidos, vetorID);
                 break;
 
             case 3:
@@ -76,12 +77,12 @@ int main() {
 
             case 5:
                 // Mostrar próximo da fila
-                //mostrarProximo(filaEmergencia, filaNormal);
+                mostrarProximo(filaEmergencia, filaNormal);
                 break;
 
             case 6:
                 // Listar pets já atendidos
-                //imprimeFila(filaEmergencia);
+                imprimeFila(filaAtendidos);
                 break;
 
             case 7:
@@ -143,17 +144,17 @@ int mostrarMenu() {
 //=================================================================
 
 //TODO verificar se os pets já atendidos sairam da fila de espera de seu respectivo tipo
-void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos) {
+void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, bool v[]) {
     Pet petAtendido;
     
     // Verifica se há pets na fila de emergência primeiro
     if (!VaziaFila(filaEmergencia)) {
-        petAtendido = RetiraFila(filaEmergencia);
+        petAtendido = RetiraFila(filaEmergencia, v);
         printf("\n=== ATENDENDO PET DE EMERGENCIA ===\n");
     } 
     // Se não há emergência, verifica fila normal
     else if (!VaziaFila(filaNormal)) {
-        petAtendido = RetiraFila(filaNormal);
+        petAtendido = RetiraFila(filaNormal, v);
         printf("\n=== ATENDENDO PET NORMAL ===\n");
     } 
     // Se ambas estão vazias
@@ -427,4 +428,26 @@ void inserirPet(Fila *filaEmergencia, Fila *filaNormal, bool v[]){
 
 }
 
+// Mostra o proximo pet a ser antendido
+// Deve exibir nome, especie e tipo de atendimento
+void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
 
+    Pet p;
+    printf("\n=== PROXIMO PET A SER ATENDIDO ===\n");
+    if (!VaziaFila(filaEmergencia) ) { // Se a fila de emergencia nao estiver vazia, mostra o proximo a ser atendido
+        p = filaEmergencia->inicio->info;
+
+            printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n"
+                , p.nome, p.especie, p.prioridade);
+    } 
+    else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
+        p = filaNormal->inicio->info;
+
+            printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n"
+                , p.nome, p.especie, p.prioridade);
+    }
+    else{
+        printf("\nNao ha pets aguardando atendimento!\n");
+    }
+            
+}
