@@ -4,11 +4,8 @@
 #include <string.h>
 #include <time.h>
 #include "FILA.h"
-#include <string.h>
 /* ============== TODO ============== */
-// - função para atender o próximo pet (retirar da fila e adicionar ao histórico)
-// - Verificar o motivo de pets selecionados para irem para a fila normal irem para a fila de emergência
-// -
+// - ARRUMAR INPUT DE IDADE E DATA (RECONHECER SE O INPUT ESTÁ CORRETO)
 // -
 // -
 // -
@@ -411,6 +408,7 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
         p = filaEmergencia->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n", p.nome, p.especie, p.prioridade);
     }
+
     else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
         p = filaNormal->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n", p.nome, p.especie, p.prioridade);
