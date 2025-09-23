@@ -1,20 +1,23 @@
-
 #ifndef FILA_H_INCLUDED
 #define FILA_H_INCLUDED
 
 #include <stdio.h>   // printf
 #include <stdlib.h>  // malloc, free, exit, NULL
-#include <string.h> 
 
-/* FUN��ES DE MANIPULA��O DE PFILA
+#include <string.h>
+
+/* FUNÇÕES DE MANIPULAÇÃO DE FILA
+
 
 Fila* CriaFila()  CRIA A FILA
 
 int VaziaFila (Fila* f) VERIFICA SE A FILA EST� VAZIA RETORNA 1 QUANDO EST� VAZIA
 
-void InsereFila (Fila* f, int v) INSER��O
 
-int RetiraFila (Fila* f) REMO��O
+void InsereFila (Fila* f, Pet v) INSERIR ELEMENTO
+
+int RetiraFila (Fila* f) REMOVER ELEMENTO
+
 
 Fila* liberaFila (Fila* f) LIBERA A FILA
 
@@ -23,15 +26,17 @@ void imprimeFila (Fila* f)IMPRIME A FILA
 
 //---------------------------------------------------------------
 //Definindo o tipo pet
+typedef struct dataNascimento{
+    int dia, mes, ano;
+} data;
 
-typedef struct {
+typedef struct animal{
     int id;                         // 100..999, único
     char nome[50];
     char especie[30];
     int idade;
-    struct { int dia, mes, ano; } nascimento;
+    data nascimento;
     int prioridade;                 // 0 = emergência, 1 = normal
-    int atendido;                   // 0 = não, 1 = sim
 } Pet;
 
 //---------------------------------------------------------------
@@ -50,7 +55,7 @@ Pet criaPet(int id, const char* nome, const char* especie, int idade) {
     p.nascimento.mes = 1;
     p.nascimento.ano = 2020;
     p.prioridade = 1;
-    p.atendido = 0;
+
     return p;
 } */
 //----------------------------------------------------------------
@@ -71,30 +76,31 @@ typedef struct fila
 int VaziaFila (Fila* f)
 {
     if (f->ini==NULL) return 1; //A fila ta vazia
-    return 0; //A fila nao ta vazia 
+
+    return 0; //A fila nao ta vazia
 
 }
 
 
-Fila* CriaFila () //o que sera retornado da função sera um ponteiro para um fila 
+Fila* CriaFila () //o que sera retornado da função sera um ponteiro para um fila
 {
-    Fila* f = (Fila*) malloc(sizeof(Fila));// cria um ponteiro para fila f e aloca um tamanho de memoria no tamanho de uma fila 
+    Fila* f = (Fila*) malloc(sizeof(Fila));// cria um ponteiro para fila f e aloca um tamanho de memoria no tamanho de uma fila
     //quando eu uso malloc, um ponteiro genérico é criado, e precisamos especificar para o tipo de dado que ele está apontando
     //por isso usamos (Fila*)
     f->ini = f->fim = NULL; // a fila esta sem conteudo
-    return f; //retorna a fila 
+    return f; //retorna a fila
 }
 
 Nos* ins_fim (Nos *fim, Pet A) //retorna um ponteiro para o novo nó inserido no final. por exemplo:    f->fim = ins_fim(f->fim, 20);
 {
-    Nos *p = (Nos*)malloc(sizeof(Nos)); //cria um ponteiro para o nó, e esse ponteiro se chama p 
-    p->info = A; //Insere o valor inteiro no nó
-    p->prox = NULL; //Como esse sera o final da fila, nao tera proximo
-    if (fim != NULL) //fim é um ponteiro que aponta para um nó, definindo assim o nó fim. Portanto se ele for null
-    //significa que ele nao esta apontando para ninguem
-   {
-     fim->prox = p;// o nó apontado por fim tem a parte prox, que é um ponteiro para outro nó, nesse ponteiro tera o endereço de p
-   }
+
+    Nos *p = (Nos*)malloc(sizeof(Nos)); //cria um ponteiro para o nó, e esse ponteiro se chama p
+    p->info = A;        //Insere as informações do pet no nó
+    p->prox = NULL;     //Como esse sera o final da fila, nao tera proximo
+    if (fim != NULL){   //fim é um ponteiro que aponta para um nó, definindo assim o nó fim. Portanto se ele for null
+                        //significa que ele nao esta apontando para ninguem
+        fim->prox = p;  // o nó apontado por fim tem a parte prox, que é um ponteiro para outro nó, nesse ponteiro tera o endereço de p
+    }
     return p;
 
 }
@@ -102,8 +108,9 @@ Nos* ins_fim (Nos *fim, Pet A) //retorna um ponteiro para o novo nó inserido no
 void InsereFila (Fila* f, Pet v)
 {
     f->fim = ins_fim(f->fim,v);
-    if (f->ini==NULL) /* fila antes vazia? */
-    f->ini = f->fim;
+    if (f->ini==NULL){ /* se a fila estava vazia, agora ambos o início e o fim apontam para o mesmo no*/
+        f->ini = f->fim;
+    }
 }
 
 Nos* retira_ini (Nos* ini)
@@ -121,14 +128,14 @@ Pet RetiraFila (Fila* f)
         printf("Fila vazia.\n");
         exit(0); /* aborta programa */
     }
-    v = f->ini->info;
-    f->ini = retira_ini(f->ini);
-    if (f->ini == NULL) /* fila ficou vazia? */
+    v = f->ini->info;                   //guarda as informações do pet no início da fila
+    f->ini = retira_ini(f->ini);        //retira o item do início da fila e avança o f->ini para o próximo item
+    if (f->ini == NULL)                 // fila ficou vazia?
     f->fim = NULL;
     return v;
 }
 //---------------------------------------------------------
-//Função para imprimir os pets na fila 
+//Função para imprimir os pets na fila
 //---------------------------------------------------------
 void imprimeFila(Fila* f) {
     Nos* q;
