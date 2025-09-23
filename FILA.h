@@ -3,17 +3,21 @@
 
 #include <stdio.h>   // printf
 #include <stdlib.h>  // malloc, free, exit, NULL
+
 #include <string.h>
 
 /* FUNÇÕES DE MANIPULAÇÃO DE FILA
+
 
 Fila* CriaFila()  CRIA A FILA
 
 int VaziaFila (Fila* f) VERIFICA SE A FILA EST� VAZIA RETORNA 1 QUANDO EST� VAZIA
 
+
 void InsereFila (Fila* f, Pet v) INSERIR ELEMENTO
 
 int RetiraFila (Fila* f) REMOVER ELEMENTO
+
 
 Fila* liberaFila (Fila* f) LIBERA A FILA
 
@@ -51,6 +55,7 @@ Pet criaPet(int id, const char* nome, const char* especie, int idade) {
     p.nascimento.mes = 1;
     p.nascimento.ano = 2020;
     p.prioridade = 1;
+
     return p;
 } */
 //----------------------------------------------------------------
@@ -71,6 +76,7 @@ typedef struct fila
 int VaziaFila (Fila* f)
 {
     if (f->ini==NULL) return 1; //A fila ta vazia
+
     return 0; //A fila nao ta vazia
 
 }
@@ -87,6 +93,7 @@ Fila* CriaFila () //o que sera retornado da função sera um ponteiro para um fi
 
 Nos* ins_fim (Nos *fim, Pet A) //retorna um ponteiro para o novo nó inserido no final. por exemplo:    f->fim = ins_fim(f->fim, 20);
 {
+
     Nos *p = (Nos*)malloc(sizeof(Nos)); //cria um ponteiro para o nó, e esse ponteiro se chama p
     p->info = A;        //Insere as informações do pet no nó
     p->prox = NULL;     //Como esse sera o final da fila, nao tera proximo
