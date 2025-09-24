@@ -162,9 +162,6 @@ void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, boo
         return;
     }
 
-    // Marca o pet como atendido
-    petAtendido.atendido = 1;
-
     // Adiciona à fila de atendidos
     InsereFila(filaAtendidos, petAtendido);
 
@@ -349,7 +346,6 @@ int gerarID(bool v[]){
 Pet criaPet(bool v[]){
     Pet p;
 
-    p.atendido = 0; // Um novo pet ainda nao foi atendido, por padrao = 0
     p.id = gerarID(v);
 
     printf("Nome: ");
@@ -419,3 +415,4 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
     }
 
 }
+
