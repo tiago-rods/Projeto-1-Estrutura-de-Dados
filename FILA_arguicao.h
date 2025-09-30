@@ -79,11 +79,11 @@ void InsereFila(Fila* f, Pet v)
 
 Nos* retiraInicio (Nos* inicio)
 {
+        Nos* p = inicio->prox;
+
     if (inicio == NULL) {
         p = NULL;
-        return p;
     }
-    Nos* p = inicio->prox;
     free(inicio);
     return p;
 }
