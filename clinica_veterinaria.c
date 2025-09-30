@@ -365,7 +365,9 @@ int searchId(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos, int ID)
 Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
     Pet p;
 
+
     p.id = gerarID(filaEmergencia, filaNormal, filaAtendidos);
+
 
     printf("Nome: ");
     fgets(p.nome, sizeof(p.nome), stdin);
@@ -434,3 +436,4 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
     }
 
 }
+
