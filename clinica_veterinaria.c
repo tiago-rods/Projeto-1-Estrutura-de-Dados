@@ -1,12 +1,10 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
-#include "FILA.h"
+#include "FILA_arguicao.h"
 /* ============== TODO ============== */
-// - ARRUMAR INPUT DE IDADE E DATA (RECONHECER SE O INPUT ESTÁ CORRETO)
 // -
 // -
 // -
@@ -26,11 +24,12 @@
 
 
 int mostrarMenu();
-Pet criaPet(bool v[]);
-void inserirPet(Fila *filaEmergencia, Fila *filaNormal, bool v[]);
-int gerarID(bool v[]);
+Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos);
+void inserirPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
+int gerarID(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos);
+int searchId(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos, int ID);
 void registrarNoHistorico(Fila *historico, Pet p);
-void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, bool v[]);
+void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
 void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal);
 void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char *termo, int buscarPorId);
 void buscarPetInterface(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos);
@@ -38,12 +37,9 @@ void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal);
 
 
 int main() {
-
-    bool vetorID[900] = {false}; // inicializa o vetor de ids como todos falsos
     srand(time(NULL)); // semente para o programa inteiro
 
  // CRIANDO FILAS
-
     Fila *filaEmergencia = CriaFila();
     Fila *filaNormal     = CriaFila();
     Fila *filaAtendidos  = CriaFila();
@@ -55,12 +51,12 @@ int main() {
         switch (numEscolha) {
             case 1:
 
-                inserirPet(filaEmergencia, filaNormal, vetorID);
+                inserirPet(filaEmergencia, filaNormal, filaAtendidos);
                 break;
 
             case 2:
                 // Atender próximo
-                atenderPet(filaEmergencia, filaNormal, filaAtendidos, vetorID);
+                atenderPet(filaEmergencia, filaNormal, filaAtendidos);
                 break;
 
             case 3:
@@ -143,17 +139,17 @@ int mostrarMenu() {
 
 
 //TODO verificar se os pets já atendidos sairam da fila de espera de seu respectivo tipo
-void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, bool v[]) {
+void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos) {
     Pet petAtendido;
 
     // Verifica se há pets na fila de emergência primeiro
     if (!VaziaFila(filaEmergencia)) {
-        petAtendido = RetiraFila(filaEmergencia, v);
+        petAtendido = RetiraFila(filaEmergencia);
         printf("\n=== ATENDENDO PET DE EMERGENCIA ===\n");
     }
     // Se não há emergência, verifica fila normal
     else if (!VaziaFila(filaNormal)) {
-        petAtendido = RetiraFila(filaNormal, v);
+        petAtendido = RetiraFila(filaNormal);
         printf("\n=== ATENDENDO PET NORMAL ===\n");
     }
     // Se ambas estão vazias
@@ -161,9 +157,6 @@ void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, boo
         printf("\nNao ha pets aguardando atendimento!\n");
         return;
     }
-
-    // Marca o pet como atendido
-    petAtendido.atendido = 1;
 
     // Adiciona à fila de atendidos
     InsereFila(filaAtendidos, petAtendido);
@@ -331,26 +324,50 @@ void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal) {
 //Gera um novo id que ainda nao foi utilizado
 //-----------------------------------------------
 
-int gerarID(bool v[]){
+int gerarID(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
 
-    int id;
+    int id, checarID;
 
     do {
         id = rand() % 900 + 100;  // gera  id entre 100 e 999
-    } while (v[id - 100]);    // se a condição for verdadeira significa que ja foi usado, portando gera outro id
-
-    v[id - 100] = true;       //  caso o id nao tenha sido usado ainda, marca como usado
+        checarID = searchId(filaEmergencia, filaNormal, filaAtendidos, id);
+    } while (checarID);    // se a condição for verdadeira significa que ja foi usado, portando gera outro id
 
     return id;
 }
 
+int searchId(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos, int ID){
+    if(!VaziaFila(filaEmergencia)){
+        for(Nos *temp = filaEmergencia->inicio; temp != NULL; temp = temp->prox){
+            if((temp->info.id) == ID){
+                return 1;
+            }
+        }
+    }
+    if(!VaziaFila(filaNormal)){
+        for(Nos *temp = filaNormal->inicio; temp != NULL; temp = temp->prox){
+            if(ID == temp->info.id){
+                return 1;
+            }
+        }
+    }
+    if(!VaziaFila(filaAtendidos)){
+        for(Nos *temp = filaAtendidos->inicio; temp != NULL; temp = temp->prox){
+            if(ID == temp->info.id){
+                return 1;
+            }
+        }
+    }
+    return 0;
+
+}
 
 //Cria um novo pet
-Pet criaPet(bool v[]){
+Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
     Pet p;
 
     p.atendido = 0; // Um novo pet ainda nao foi atendido, por padrao = 0
-    p.id = gerarID(v);
+    p.id = gerarID(filaEmergencia, filaNormal, filaAtendidos);
 
     printf("Nome: ");
     fgets(p.nome, sizeof(p.nome), stdin);
@@ -386,10 +403,10 @@ Pet criaPet(bool v[]){
 
 
 //Insere um novo pet na fila
-void inserirPet(Fila *filaEmergencia, Fila *filaNormal, bool v[]){
+void inserirPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos){
 
     //cria o pet
-    Pet novoPet = criaPet(v);
+    Pet novoPet = criaPet(filaEmergencia, filaNormal, filaAtendidos);
 
     //insere o pet na fila
     if (novoPet.prioridade == 0){
@@ -409,7 +426,6 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
         p = filaEmergencia->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n", p.nome, p.especie, p.prioridade);
     }
-
     else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
         p = filaNormal->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n", p.nome, p.especie, p.prioridade);
