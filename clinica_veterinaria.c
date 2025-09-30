@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 #include <time.h>
 #include "FILA_arguicao.h"
@@ -426,6 +425,7 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
         p = filaEmergencia->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n", p.nome, p.especie, p.prioridade);
     }
+
     else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
         p = filaNormal->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n", p.nome, p.especie, p.prioridade);
