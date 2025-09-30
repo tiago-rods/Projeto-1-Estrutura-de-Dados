@@ -322,25 +322,35 @@ Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
     fgets(p.especie, sizeof(p.especie), stdin);
     p.especie[strcspn(p.especie, "\n")] = '\0';
 
-    printf("Idade: ");
-    scanf("%d", &p.idade);
-    getchar();
+    do{
+        printf("Idade: ");
+        scanf("%d", &p.idade);
+        getchar();
+    } while(p.idade < 0);
 
-    printf("Ano de nascimento: ");
-    scanf("%d", &p.nascimento.ano);
-    getchar();
+    do {
+        printf("Ano de nascimento: "); 
+        scanf("%d", &p.nascimento.ano);
+        getchar();
+    } while(p.nascimento.ano < 0 || p.nascimento.ano > 2025); 
 
-    printf("Mes de nascimento: ");
-    scanf("%d", &p.nascimento.mes);
-    getchar();
+    do {
+        printf("Mes de nascimento: ");
+        scanf("%d", &p.nascimento.mes);
+        getchar();
+    } while(p.nascimento.mes < 1 || p.nascimento.mes > 12);
 
-    printf("Dia de nascimento: ");
-    scanf("%d", &p.nascimento.dia);
-    getchar();
+    do {
+        printf("Dia de nascimento: ");
+        scanf("%d", &p.nascimento.dia);
+        getchar();
+    } while(p.nascimento.dia < 0 || p.nascimento.dia > 31);
 
-    printf("Tipo de prioridade (0 = Emergencia | 1 = Normal ): ");
-    scanf("%d", &p.prioridade);
-    getchar();
+    do {
+        printf("Tipo de prioridade (0 = Emergencia | 1 = Normal ): ");
+        scanf("%d", &p.prioridade);
+        getchar();
+    } while(p.prioridade < 0 || p.prioridade > 1);
 
     return p;
 }
@@ -375,4 +385,5 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
     }
 
 }
+
 
