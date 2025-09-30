@@ -361,11 +361,12 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
 
     Pet p;
     printf("\n=== PROXIMO PET A SER ATENDIDO ===\n");
-    if (!VaziaFila(filaEmergencia) ) { // Se a fila de emergencia nao estiver vazia, mostra o proximo a ser atendido
+    if (!VaziaFila(filaEmergencia) ) {
         p = filaEmergencia->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n", p.nome, p.especie, p.prioridade);
     }
-    else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
+
+    else if (!VaziaFila(filaNormal)){
         p = filaNormal->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n", p.nome, p.especie, p.prioridade);
     }
