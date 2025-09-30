@@ -80,7 +80,8 @@ void InsereFila(Fila* f, Pet v)
 Nos* retiraInicio (Nos* inicio)
 {
     if (inicio == NULL) {
-        return NULL;
+        p = NULL;
+        return p;
     }
     Nos* p = inicio->prox;
     free(inicio);
