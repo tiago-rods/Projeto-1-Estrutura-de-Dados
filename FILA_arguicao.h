@@ -91,13 +91,13 @@ Nos* retiraInicio (Nos* inicio)
 Pet RetiraFila (Fila* f)
 {
     Pet p;
+    p = f->inicio->info;
     if (VaziaFila(f))
     {
         printf("Fila vazia. Nao e possivel retirar Pet.\n");
-        return NULL;
+        return p;
     }
 
-    p = f->inicio->info;
 
 
     f->inicio = retiraInicio(f->inicio);
