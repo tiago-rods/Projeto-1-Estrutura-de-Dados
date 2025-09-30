@@ -88,7 +88,7 @@ Nos* retiraInicio (Nos* inicio)
     return p;
 }
 
-Pet RetiraFila (Fila* f, bool v[])
+Pet RetiraFila (Fila* f)
 {
     Pet p;
     if (VaziaFila(f))
@@ -100,14 +100,9 @@ Pet RetiraFila (Fila* f, bool v[])
     p = f->inicio->info;
 
 
-    v[p.id - 100] = false;
-
-
     f->inicio = retiraInicio(f->inicio);
     if (f->inicio == NULL)
         f->fim = NULL;
-
-
 
     return p;
 }
