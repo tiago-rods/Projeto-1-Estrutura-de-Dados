@@ -18,7 +18,6 @@ typedef struct animal{
     int idade;
     Data nascimento;
     int prioridade;
-    int atendido;
 } Pet;
 
 
@@ -94,7 +93,7 @@ Pet RetiraFila (Fila* f)
     if (VaziaFila(f))
     {
         printf("Fila vazia. Nao e possivel retirar Pet.\n");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
 
     p = f->inicio->info;
