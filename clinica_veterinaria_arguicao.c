@@ -129,7 +129,7 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
         int id = atoi(termo);
         for (q = filaEmergencia->inicio; (q != NULL && q->info.id != id); q = q->prox){}
 
-        if(q->info.id == id) {
+        if((q != NULL) && (q->info.id == id)){
             printf("\n=== PET ENCONTRADO NA FILA DE EMERGENCIA ===\n");
 
             printf("ID: %d | Nome: %s | Especie: %s | Idade: %d\n",
@@ -140,7 +140,7 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
         } else{
             for (q = filaNormal -> inicio; (q != NULL && q->info.id != id); q = q->prox){}
 
-            if(q->info.id == id) {
+            if((q != NULL) && (q->info.id == id)) {
             printf("\n=== PET ENCONTRADO NA FILA NORMAL ===\n");
 
             printf("ID: %d | Nome: %s | Especie: %s | Idade: %d\n",
@@ -151,7 +151,7 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
             } else{
                 for (q = filaAtendidos -> inicio; (q != NULL && q->info.id != id); q = q->prox){}
 
-                if (q->info.id == id) {
+                if ((q != NULL) && (q->info.id == id)) {
                     printf("\n=== PET ENCONTRADO NA FILA DE ATENDIDOS ===\n");
 
                     printf("ID: %d | Nome: %s | Especie: %s | Idade: %d\n",
@@ -375,3 +375,4 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
     }
 
 }
+
