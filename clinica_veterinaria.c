@@ -365,7 +365,6 @@ int searchId(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos, int ID)
 Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
     Pet p;
 
-    p.atendido = 0; // Um novo pet ainda nao foi atendido, por padrao = 0
     p.id = gerarID(filaEmergencia, filaNormal, filaAtendidos);
 
     printf("Nome: ");
@@ -425,7 +424,6 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
         p = filaEmergencia->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n", p.nome, p.especie, p.prioridade);
     }
-
     else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
         p = filaNormal->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n", p.nome, p.especie, p.prioridade);
