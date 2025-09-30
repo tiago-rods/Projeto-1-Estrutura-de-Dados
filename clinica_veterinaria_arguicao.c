@@ -3,23 +3,6 @@
 #include <string.h>
 #include <time.h>
 #include "FILA_arguicao.h"
-/* ============== TODO ============== */
-// -
-// -
-// -
-// -
-/* ============== TODO ============== */
-
-//* ============== DONE ============== */
-// -
-// -
-// -
-// -
-// -
-// -
-// -
-// -
-//* ============== DONE ============== */
 
 
 int mostrarMenu();
@@ -36,9 +19,8 @@ void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal);
 
 
 int main() {
-    srand(time(NULL)); // semente para o programa inteiro
+    srand(time(NULL));
 
- // CRIANDO FILAS
     Fila *filaEmergencia = CriaFila();
     Fila *filaNormal     = CriaFila();
     Fila *filaAtendidos  = CriaFila();
@@ -54,27 +36,22 @@ int main() {
                 break;
 
             case 2:
-                // Atender próximo
                 atenderPet(filaEmergencia, filaNormal, filaAtendidos);
                 break;
 
             case 3:
-                // Buscar por nome ou ID
                 buscarPetInterface(filaEmergencia, filaNormal, filaAtendidos);
                 break;
 
             case 4:
-                // Imprimir relatório das filas
                 imprimeRelatorio(filaEmergencia, filaNormal);
                 break;
 
             case 5:
-                // Mostrar próximo da fila
                 mostrarProximo(filaEmergencia, filaNormal);
                 break;
 
             case 6:
-                // Listar pets já atendidos
                 imprimeFila(filaAtendidos);
                 break;
 
@@ -89,7 +66,6 @@ int main() {
 
     } while (numEscolha != 7);
 
-    // Libera memoria e deixa os ponteiros null pois o libera fila retorna null
     filaEmergencia = liberaFila(filaEmergencia);
     filaNormal     = liberaFila(filaNormal);
     filaAtendidos  = liberaFila(filaAtendidos);
@@ -98,9 +74,6 @@ int main() {
 }
 
 
-// --------------------------------------------------------
-// Menu
-// --------------------------------------------------------
 int mostrarMenu() {
 
     int escolha;
@@ -119,64 +92,44 @@ int mostrarMenu() {
     printf("Escolha: ");
     fflush(stdout);
     scanf("%d", &escolha);
-    getchar(); // consome o '\n' deixado no buffer
+    getchar();
     return escolha;
 }
-// ----------------------------------------------------------------
 
 
-
-//===============================================
-//Funções principais
-//===============================================
-
-
-
-
-
-//=================================================================
-
-
-//TODO verificar se os pets já atendidos sairam da fila de espera de seu respectivo tipo
 void atenderPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos) {
     Pet petAtendido;
 
-    // Verifica se há pets na fila de emergência primeiro
     if (!VaziaFila(filaEmergencia)) {
         petAtendido = RetiraFila(filaEmergencia);
         printf("\n=== ATENDENDO PET DE EMERGENCIA ===\n");
     }
-    // Se não há emergência, verifica fila normal
     else if (!VaziaFila(filaNormal)) {
         petAtendido = RetiraFila(filaNormal);
         printf("\n=== ATENDENDO PET NORMAL ===\n");
     }
-    // Se ambas estão vazias
     else {
         printf("\nNao ha pets aguardando atendimento!\n");
         return;
     }
 
-    // Adiciona à fila de atendidos
     InsereFila(filaAtendidos, petAtendido);
 
-    // Mostra informações do pet atendido
     printf("Pet atendido com sucesso!\n");
     printf("ID: %d | Nome: %s | Especie: %s\n",
            petAtendido.id, petAtendido.nome, petAtendido.especie);
     printf("Prioridade: %s\n", (petAtendido.prioridade == 0 ? "Emergencial" : "Normal"));
 }
 
-//= ================================================
-//TODO talvez fazer um switch case para escolher se quer buscar por nome ou id
+
 void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char *termo, int buscarPorId) {
     Nos *q;
 
-    if(buscarPorId){    //CHECA SE A BUSCA SERÁ POR ID OU POR NOME
+    if(buscarPorId){
         int id = atoi(termo);
-        for (q = filaEmergencia->inicio; (q != NULL && q->info.id != id); q = q->prox){}    //RODA TODA A FILA EMERGENCIAL ATÉ ENCONTRAR O ID, OU ACABAR A FILA
+        for (q = filaEmergencia->inicio; (q != NULL && q->info.id != id); q = q->prox){}
 
-        if((q != NULL) && (q->info.id == id)) {              //SE O PET FOR ENCONTRADO NA FILA EMERGENCIAL, IMPRIMIR INFORMAÇÕES E STATUS DO PET
+        if((q != NULL) && (q->info.id == id)){
             printf("\n=== PET ENCONTRADO NA FILA DE EMERGENCIA ===\n");
 
             printf("ID: %d | Nome: %s | Especie: %s | Idade: %d\n",
@@ -184,7 +137,7 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
             printf("Nascimento: %02d/%02d/%04d | Prioridade: Emergencial\n",
                     q->info.nascimento.dia, q->info.nascimento.mes, q->info.nascimento.ano);
 
-        } else{                             //CASO O PET NÃO ESTEJA NA FILA PREFERENCIAL, BUSCAR NA FILA NORMAL
+        } else{
             for (q = filaNormal -> inicio; (q != NULL && q->info.id != id); q = q->prox){}
 
             if((q != NULL) && (q->info.id == id)) {
@@ -195,10 +148,10 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
             printf("Nascimento: %02d/%02d/%04d | Prioridade: Normal\n",
                     q->info.nascimento.dia, q->info.nascimento.mes, q->info.nascimento.ano);
 
-            } else{                         //CASO O PET NÃO ESTEJA NA FILA DE ATENDIMENTO, BUSCAR NO HISTÓRICO DE PETS JÁ ATENDIDOS
+            } else{
                 for (q = filaAtendidos -> inicio; (q != NULL && q->info.id != id); q = q->prox){}
 
-                if((q != NULL) && (q->info.id == id)) {
+                if ((q != NULL) && (q->info.id == id)) {
                     printf("\n=== PET ENCONTRADO NA FILA DE ATENDIDOS ===\n");
 
                     printf("ID: %d | Nome: %s | Especie: %s | Idade: %d\n",
@@ -211,7 +164,7 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
                 }
             }
         }
-    } else{     //BUSCA REALIZADA POR NOME
+    } else{
         for (q = filaEmergencia -> inicio; (q != NULL); q = q->prox){
             if (strstr(q->info.nome, termo) != NULL) {
                 printf("\n=== PET ENCONTRADO NA FILA DE EMERGENCIA ===\n");
@@ -248,7 +201,6 @@ void buscarPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos, char
     }
 }
 
-//= =============================================
 
 void buscarPetInterface(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos) {
     char termo[50];
@@ -264,8 +216,8 @@ void buscarPetInterface(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendi
     switch (opcao) {
         case 1:
             printf("Digite o ID: ");
-            fgets(termo, sizeof(termo), stdin); //std
-            termo[strcspn(termo, "\n")] = '\0'; //strcsonspn remove o \n do final da string, assim não precisa usar o getchar depois do fgets
+            fgets(termo, sizeof(termo), stdin);
+            termo[strcspn(termo, "\n")] = '\0';
             buscarPet(filaEmergencia, filaNormal, filaAtendidos, termo, 1);
             break;
         case 2:
@@ -286,12 +238,10 @@ void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal) {
     int countEmergencia = 0, countNormal = 0;
     Nos *q;
 
-    // Conta pets na fila de emergência
     for (q = filaEmergencia->inicio; q != NULL; q = q->prox) {
         countEmergencia++;
     }
 
-    // Conta pets na fila normal
     for (q = filaNormal->inicio; q != NULL; q = q->prox) {
         countNormal++;
     }
@@ -319,18 +269,15 @@ void imprimeRelatorio(Fila *filaEmergencia, Fila *filaNormal) {
     }
 }
 
-//-----------------------------------------------
-//Gera um novo id que ainda nao foi utilizado
-//-----------------------------------------------
 
 int gerarID(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
 
     int id, checarID;
 
     do {
-        id = rand() % 900 + 100;  // gera  id entre 100 e 999
+        id = rand() % 900 + 100;
         checarID = searchId(filaEmergencia, filaNormal, filaAtendidos, id);
-    } while (checarID);    // se a condição for verdadeira significa que ja foi usado, portando gera outro id
+    } while (checarID);
 
     return id;
 }
@@ -361,13 +308,10 @@ int searchId(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos, int ID)
 
 }
 
-//Cria um novo pet
 Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
     Pet p;
 
-
     p.id = gerarID(filaEmergencia, filaNormal, filaAtendidos);
-
 
     printf("Nome: ");
     fgets(p.nome, sizeof(p.nome), stdin);
@@ -378,56 +322,61 @@ Pet criaPet(Fila *filaEmergencia, Fila *filaNormal,Fila *filaAtendidos){
     fgets(p.especie, sizeof(p.especie), stdin);
     p.especie[strcspn(p.especie, "\n")] = '\0';
 
-    printf("Idade: ");
-    scanf("%d", &p.idade);
-    getchar(); // limpa o \n deixado no buffer
+    do{
+        printf("Idade: ");
+        scanf("%d", &p.idade);
+        getchar();
+    } while(p.idade < 0);
 
-    printf("Ano de nascimento: ");
-    scanf("%d", &p.nascimento.ano);
-    getchar();
+    do {
+        printf("Ano de nascimento: "); 
+        scanf("%d", &p.nascimento.ano);
+        getchar();
+    } while(p.nascimento.ano < 0 || p.nascimento.ano > 2025); 
 
-    printf("Mes de nascimento: ");
-    scanf("%d", &p.nascimento.mes);
-    getchar();
+    do {
+        printf("Mes de nascimento: ");
+        scanf("%d", &p.nascimento.mes);
+        getchar();
+    } while(p.nascimento.mes < 1 || p.nascimento.mes > 12);
 
-    printf("Dia de nascimento: ");
-    scanf("%d", &p.nascimento.dia);
-    getchar();
+    do {
+        printf("Dia de nascimento: ");
+        scanf("%d", &p.nascimento.dia);
+        getchar();
+    } while(p.nascimento.dia < 0 || p.nascimento.dia > 31);
 
-    printf("Tipo de prioridade (0 = Emergencia | 1 = Normal ): ");
-    scanf("%d", &p.prioridade);
-    getchar();
+    do {
+        printf("Tipo de prioridade (0 = Emergencia | 1 = Normal ): ");
+        scanf("%d", &p.prioridade);
+        getchar();
+    } while(p.prioridade < 0 || p.prioridade > 1);
 
     return p;
 }
 
 
-//Insere um novo pet na fila
 void inserirPet(Fila *filaEmergencia, Fila *filaNormal, Fila *filaAtendidos){
 
-    //cria o pet
     Pet novoPet = criaPet(filaEmergencia, filaNormal, filaAtendidos);
 
-    //insere o pet na fila
     if (novoPet.prioridade == 0){
-        InsereFila(filaEmergencia, novoPet); // Insere na fila emergencial
+        InsereFila(filaEmergencia, novoPet);
     } else{
-        InsereFila(filaNormal, novoPet); // Insere na fila normal
+        InsereFila(filaNormal, novoPet);
     }
 }
 
-// Mostra o proximo pet a ser antendido
-// Deve exibir nome, especie e tipo de atendimento
 void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
 
     Pet p;
     printf("\n=== PROXIMO PET A SER ATENDIDO ===\n");
-    if (!VaziaFila(filaEmergencia) ) { // Se a fila de emergencia nao estiver vazia, mostra o proximo a ser atendido
+    if (!VaziaFila(filaEmergencia) ) {
         p = filaEmergencia->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Emergencial (%d)\n", p.nome, p.especie, p.prioridade);
     }
 
-    else if (!VaziaFila(filaNormal)){ //Se a fila normal nao estiver vazia
+    else if (!VaziaFila(filaNormal)){
         p = filaNormal->inicio->info;
         printf("Nome: %s | Especie: %s | Tipo de atendimento: Normal (%d)\n", p.nome, p.especie, p.prioridade);
     }
@@ -436,4 +385,5 @@ void mostrarProximo(Fila *filaEmergencia, Fila *filaNormal){
     }
 
 }
+
 
